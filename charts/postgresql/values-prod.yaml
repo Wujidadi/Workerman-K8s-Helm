@@ -1,0 +1,13 @@
+auth:
+  username: produser
+  password: prodpassword
+  database: workermandb
+  postgresPassword: prodrootpassword
+
+primary:
+  service:
+    port: 5432
+
+  persistence:
+    enabled: true
+    size: 5Gi

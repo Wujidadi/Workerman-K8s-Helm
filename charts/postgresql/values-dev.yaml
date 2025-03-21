@@ -1,0 +1,13 @@
+auth:
+  username: devuser
+  password: devpassword
+  database: workermandb
+  postgresPassword: devrootpassword
+
+primary:
+  service:
+    port: 5432
+
+  persistence:
+    enabled: true
+    size: 1Gi

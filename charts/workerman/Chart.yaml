@@ -1,0 +1,14 @@
+apiVersion: v2
+name: workerman
+type: application
+version: 0.1.0
+appVersion: 1.0.0
+description: A Helm chart for deploying Workerman App
+keywords:
+  - php
+  - workerman
+maintainers:
+  - name: wujidadi
+    email: wujidadi@gmail.com
+sources:
+  - https://github.com/Wujidadi/Workerman-K8s-Helm

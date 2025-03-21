@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "workerman.fullname" . }}
+  labels:
+    app: {{ include "workerman.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "workerman.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "workerman.name" . }}
+    spec:
+      hostname: workerman
+      subdomain: workerman-app
+      containers:
+        - name: {{ include "workerman.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          workingDir: /app
+          command: ["php"]
+          args: ["/app/start.php", "start"]
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: app-volume
+              mountPath: /app
+            - name: zsh-history-volume
+              mountPath: /root/.zsh_history
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: app-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.appPvc | default (include "workerman.fullname" .) }}
+        - name: zsh-history-volume
+          hostPath:
+            path: {{ .Values.persistence.zshHistoryHostPath | quote }}
+            type: FileOrCreate
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}

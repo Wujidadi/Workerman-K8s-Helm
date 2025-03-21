@@ -1,0 +1,44 @@
+architecture: replication
+
+auth:
+  enabled: true
+  existingSecret: redis-workerman-secret  # 建議用 Kubernetes Secret 管理生產環境密碼
+
+master:
+  persistence:
+    enabled: true
+    size: 8Gi
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+
+replica:
+  replicaCount: 2
+  persistence:
+    enabled: true
+    size: 8Gi
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: false
+
+networkPolicy:
+  enabled: true

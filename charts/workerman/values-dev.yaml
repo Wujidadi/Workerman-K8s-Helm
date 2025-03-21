@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  tag: "dev"
+
+autoscaling:
+  enabled: false
+
+ingress:
+  enabled: true
+  className: workerman-ingress-nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+  hosts:
+    - host: workerman-dev.localhost
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

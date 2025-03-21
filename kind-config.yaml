@@ -1,0 +1,29 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: workerman-k8s
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: /Users/wujidadi/Documents/Workspaces/Kubernetes/workerman-k8s-helm/zsh/root.zsh_history
+        containerPath: /mnt/host-zsh-history/root.zsh_history
+      - hostPath: /Users/wujidadi/Documents/Workspaces/Kubernetes/workerman-k8s-helm/src/app
+        containerPath: /mnt/host-app
+    extraPortMappings:
+      - containerPort: 30740
+        hostPort: 740
+        protocol: TCP
+      - containerPort: 30743
+        hostPort: 743
+        protocol: TCP
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+  - role: worker
+    extraMounts:
+      - hostPath: /Users/wujidadi/Documents/Workspaces/Kubernetes/workerman-k8s-helm/zsh/root.zsh_history
+        containerPath: /mnt/host-zsh-history/root.zsh_history
+      - hostPath: /Users/wujidadi/Documents/Workspaces/Kubernetes/workerman-k8s-helm/src/app
+        containerPath: /mnt/host-app
